@@ -43,7 +43,7 @@ var filter = function(requestBody){
   return {
     distance: distance,
     filteredCoords:filteredCoords
-  }
-}
+  };
+};
 
 module.exports = filter;

@@ -35,11 +35,11 @@ body {
 }
 
 h1 {
-  font-family: 'Rancho', helvetica, arial;
+  font-family: arial, helvetica;
   font-size: 3em;
 }
 h1 span {
-  font-family: 'Lobster', helvetica, arial;
+  font-family: arial, helvetica;
   font-size: 0.9em;
   position:relative;
   top:1px;
@@ -90,6 +90,6 @@ table {
   vertical-align: middle;
   text-align: center;
   font-size: 2.0em;
-  font-family: 'Rancho', helvetica, arial;
+  font-family: arial, helvetica;
   color: red;
 }

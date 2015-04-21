@@ -30,7 +30,7 @@ Client.prototype.get = function(resource, params, callback) {
       callback(error, data, response);
     }
   );
-}
+};
 
 /*
 Exampe:
@@ -38,7 +38,7 @@ yelp.search({term: "food", location: "Montreal"}, function(error, data) {});
 */
 Client.prototype.search = function(params, callback) {
   return this.get('search', params, callback);
-}
+};
 
 
 
