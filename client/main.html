@@ -86,7 +86,8 @@
                 <input type="text" autofill class="form-control submissionfield" id="end" placeholder="Destination..." ng-model="location.end">
               </div><br>
               <select name="serviceSelect" ng-model="optionFilter" ng-options="option.value as option.name for option in optionSelections" class="form-control" id="sel1"></select>
-              <button type="submit" class="btn btn-default navbar-btn">Let's Go!</button>&nbsp;&nbsp;&nbsp;&nbsp;
+              <button type="submit" class="btn btn-default navbar-btn">Let's Go!</button>&nbsp;&nbsp;&nbsp;&nbsp;<br>
+              {{distance}}
             </form>
           </div>
         </div><!-- col-lg-12 -->

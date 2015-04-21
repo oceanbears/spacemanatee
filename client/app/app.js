@@ -1,6 +1,7 @@
 angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
 
 .controller('mapCtrl', ['$scope', '$element', 'Maps', 'Utility', function($scope, $element, Maps, Utility) {
+
   //initialize the user input option selector
   $scope.optionSelections = [
     {name: 'Everything', value:""},
@@ -90,6 +91,8 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
             console.log("PROMISE OBJ: ", res.data.results);
             // get back recommendations from Yelp and display as markers
             Utility.placemarkers(res.data.results);
+            $scope.distance = "You have  " + res.data.results.length + " spots to pick from in " + 
+            sendData.distance + ".";
             $scope.topTen = res.data.topTen;
             console.log(res.data.results);
           });
@@ -97,6 +100,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
           //Log the status code on error
           console.log("Geocode was not successful: " + status);
           //set the geoCodeNotSuccessful to true
+
           $scope.geoCodeNotSuccessful = true;
           $scope.appendWarningMsg($scope.geoCodeNotSuccessful); // append the warning message to main.html
         }
