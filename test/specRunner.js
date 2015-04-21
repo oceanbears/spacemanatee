@@ -11,12 +11,12 @@ describe('First test', function(){
       expect(res.status).to.equal(200);
       //expect(res.body).to.exist;
       done();
-    })
+    });
   });
 
   it('should receive 10 yelp objects after post', function(done){
     request.post('localhost:3456/search', testWaypoints).end(function(res){
       expect(typeof res.body).to.equal('object');
-    })
-  })
+    });
+  });
 });

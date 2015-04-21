@@ -172,4 +172,4 @@ module.exports.createTopResultsJSON = function(yelpResults, distance) {
     topTen: topResults
   };
   return result;
-}
+};

@@ -2,7 +2,7 @@
 if (typeof(Number.prototype.toRad) === "undefined") {
   Number.prototype.toRad = function() {
     return this * Math.PI / 180;
-  }
+  };
 }
 
 // calculate the distance between 2 waypoints, given their latitudes and longitudes, return distance in miles
@@ -24,7 +24,7 @@ module.exports.calcDistance = function(pt1, pt2) {
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var distance = R * c * 0.621371; // convert distance from km to miles
   return distance;
-}
+};
 
 // parse google coordinate into {latitude:..., longitude: ... } format
 module.exports.parseGoogleCoord = function(googleCoord) {
@@ -37,9 +37,9 @@ module.exports.parseGoogleCoord = function(googleCoord) {
         longitude: longitude
       }
     }
-  }
+  };
   return obj;
-}
+};
 
 // trim the google waypoint coordinate to take out start and end way point so no clustering at 2 ends.
 module.exports.trimGoogleCoord = function(googleCoords, distance) {
@@ -56,4 +56,8 @@ module.exports.trimGoogleCoord = function(googleCoords, distance) {
     trimmedCoords = googleCoords;
   }
   return trimmedCoords;
-}
+};
+
+
+
+
