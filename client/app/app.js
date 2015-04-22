@@ -55,7 +55,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
           geocoder.geocode({ 'latLng': latlng }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
               if (results[1]) {
-                $("#image").hide() //hide loader image
+                $("#image").hide(); //hide loader image
                 $("#start").val(results[1].formatted_address); //display address
               }
             }
@@ -70,6 +70,11 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     $scope.geoCodeNotSuccessful = false;  // every time when submit button is pressed, reset the geoCodeNotSuccessful to false
     $element.find("main-area").empty();   // clear out the warning messages from previous location input
     console.log("SCOPE ENTIRE: ", $scope.location);
+    //clears any markers the user has entered by clicking
+    if (clickMarker) {
+      clickMarker.setMap(null);
+      clickMarker = null;
+    }
     var startGeo, endGeo;
 
     calcRoute();
