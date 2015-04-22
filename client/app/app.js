@@ -83,7 +83,6 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
       }
 
       // create object to send to Google to generate directions
-      console.log("this is my start location",$scope.location.start);
       var request = {
         origin: $scope.location.start,
         destination: $scope.location.end,

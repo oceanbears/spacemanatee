@@ -34,13 +34,32 @@ angular.module('app.service', [])
         var lat = places[i].location.coordinate.latitude;
         var lng = places[i].location.coordinate.longitude;
         var description = renderView(i, places);
+        
+        //images display upon selection type
+        var img;
+        if ($('#sel1').val() === "1") {
+          img = "images/foodPin.png";
+        } else if ($('#sel1').val() === "2") {
+          img = "images/nightPin.png";
+        } else if ($('#sel1').val() === "3") {
+          img = "images/shoppingPin.png";
+        } else if ($('#sel1').val() === "4") {
+          img = "images/hospPin.png";
+        } else if ($('#sel1').val() === "5") {
+          img = "images/gasPin.png";
+        } else if ($('#sel1').val() === "6") {
+          img = "images/petPin.png";
+        } else {
+          img = "images/elsePin.png";
+        }
 
         var marker = new google.maps.Marker({
           map: map,
           position: new google.maps.LatLng(lat,lng),
           animation: google.maps.Animation.DROP,
-          icon: "images/smPin1.png"
+          icon: img
         });
+
         //Setup the pop-up box that opens when you click a marker
         attachInstructionText(marker, description);
         markerArray[i] = marker;
