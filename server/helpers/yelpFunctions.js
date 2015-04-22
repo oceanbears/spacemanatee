@@ -4,11 +4,11 @@ var coord = require('./coordinateHelpers');
 
 // create yelp client using Oauth
 var yelpClient = yelp.createClient({
-  consumer_key: process.env.KEY || key.consumer_key,
-  consumer_secret: process.env.CONSUMER_SECRET || key.consumer_secret,
-  token: process.env.TOKEN || key.token,
-  token_secret: process.env.TOKEN_SECRET || key.token_secret,
-  ssl: process.env.SSL || key.ssl
+ consumer_key: process.env.KEY || key.consumer_key,
+ consumer_secret: process.env.CONSUMER_SECRET || key.consumer_secret,
+ token: process.env.TOKEN || key.token,
+ token_secret: process.env.TOKEN_SECRET || key.token_secret,
+ ssl: process.env.SSL || key.ssl
 });
 
 // Yelp search parameter configuration defaults
@@ -28,16 +28,14 @@ function isAlreadyInArray(array, target) {
   return false;
 }
 
-// check if a place is a common place to be filtered out
-var commonFilter = ["McDonald's", "Burger King", "Jack in the Box", "Carl's Junior", "StarBucks", "Subway",
-"Pizza Hut", "Del Taco", "Taco Bell", "Chick-fil-A", "Farm", "Truck", "In-N-Out"];
+// places we don't wanna eat 
+var commonFilter = {"McDonald's": true, "Burger King": true, "Jack in the Box": true, "Carl's Junior": true, "StarBucks": true, "Subway": true,
+"Pizza Hut": true, "Del Taco": true, "Taco Bell": true, "Chick-fil-A": true, "Farm": true, "Truck": true, "In-N-Out": true
+};
 
-function isCommonPlace(businessEntry, commonFilter){
-  for (var i = 0; i < commonFilter.length; i++) {
-    if (businessEntry.name.indexOf(commonFilter[i]) > -1)
-      return true;
-  }
-  return false;
+// check if a place is a common place to be filtered out
+function isCommonPlace(businessEntry){
+  return commonFilter[businessEntry.name] || false;
 }
 
 // function to use yelp API to get the top choices based on longitude and latitude
@@ -50,7 +48,8 @@ module.exports.searchYelp = function (req, res, coords, distance, callback) {
   var yelpResults = [];
 
   // yelp search parameter configuration
-  yelpProperty.term = req.body.optionFilter;           // Type of business (food, restaurants, bars, hotels, etc.)
+  yelpProperty.term = req.body.optionFilter;  // Type of business (food, restaurants, bars, hotels, etc.)
+
 
   //This is for changing the radius filter depending on the distance of the trip.
   // if (distance <= 20) {
@@ -60,6 +59,15 @@ module.exports.searchYelp = function (req, res, coords, distance, callback) {
   // } else {
   //   yelpProperty.radius_filter = 5 * 1609.34;
   // }
+
+  if (distance <= 20) {
+    yelpProperty.radius_filter = 0.8 * 1609.34;
+  } else if (distance <= 40) {
+    yelpProperty.radius_filter = 2.5 * 1609.34;
+  } else {
+    yelpProperty.radius_filter = 5 * 1609.34;
+  }
+
 
   //Request yelp for each point along route that is returned by filterGoogle.js
   for(var i = 0; i < coords.length; i++){
@@ -95,6 +103,7 @@ module.exports.createTopResultsJSON = function(yelpResults, distance, numberStop
   var evenSpreadResults = [];
   numberStops = numberStops || 10; //If the number of stops is specified, use it
 
+
   //set the section size based on the number of stops the user wants
   var sectionSize = distance / numberStops;
   var sectionNumber = 0;
@@ -108,10 +117,29 @@ module.exports.createTopResultsJSON = function(yelpResults, distance, numberStop
     if (topResults.length < 10) {
       topResults.push(business);
       return true;
+
+  //Push all businesses from yelpResults into one array for easy filtering
+  for(var i = 0; i < yelpResults.length; i++){
+    if(yelpResults[i].businesses){
+      allBusinesses = allBusinesses.concat(yelpResults[i].businesses);
+    }
+  }
+
+  console.log("allBusinesses: ", allBusinesses)
+  //loop through each business and compare ratings, only push the overall top 10 into topResults
+  for(var j = 0;j < allBusinesses.length; j++){
+    //yelp includes some highly rated businesses well outside of the search radius, possibly a "featured business"
+    //if such a business is included, skip over it
+    if(allBusinesses[j].distance > yelpProperty.radius_filter){
+      continue;
+    }
+    //Push the first 10 businesses into topResults
+    if(topResults.length < 10){
+      topResults.push(allBusinesses[j]);
+
     } else {
       //compare ratings
       for(var k = 0; k < topResults.length; k++){
-        // if the business is not already in the topResults;
         // if not in the topResults, then proceed with comparing, else, skip the current business entry
         if (!isAlreadyInArray(topResults, business)) {
           //Check rating

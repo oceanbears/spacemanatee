@@ -66,11 +66,10 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     });
   };
 
-  $scope.submit = function(city) {
+  $scope.submit = function() {
     $scope.geoCodeNotSuccessful = false;  // every time when submit button is pressed, reset the geoCodeNotSuccessful to false
     $element.find("main-area").empty();   // clear out the warning messages from previous location input
     console.log("SCOPE ENTIRE: ", $scope.location);
-    var startGeo, endGeo;
 
     calcRoute();
 
@@ -79,6 +78,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
       var directionsService = new google.maps.DirectionsService();
       // clear markers whenever new search
       for (var i = 0; i < markerArray.length; i++) {
+        console.log("marker array: ",markerArray)
         markerArray[i].setMap(null);
       }
 
@@ -106,13 +106,13 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
           var sendData = {
             distance: response.routes[0].legs[0].distance.text,
             optionFilter: $scope.optionFilter,
-            waypoints: {}
+            waypoints: [],
           };
 
           //gather all points along route returned by Google in overview_path property
           //and insert them into waypoints object to send to server
           for (var j = 0; j < response.routes[0].overview_path.length; j++) {
-            sendData.waypoints[j] = response.routes[0].overview_path[j].k + "," + response.routes[0].overview_path[j].D;
+            sendData.waypoints.push(response.routes[0].overview_path[j].k + "," + response.routes[0].overview_path[j].D);
           }
 
           console.log("sendData: ", sendData);
@@ -127,7 +127,6 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
             $scope.distance = "You have  " + res.data.results.length + " spots to pick from in " + 
             sendData.distance + ".";
             $scope.topTen = res.data.topTen;
-            console.log(res.data.results);
           });
         } else {
           //Log the status code on error
@@ -141,20 +140,4 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     }
   };
 }])
-.factory('Maps', ['$http', function($http) {
-  //This function sends a POST to the server at route /csearch with all waypoints along route as data
-  var sendPost = function(routeObject){
-    return $http.post('/search', routeObject)
-      .then(function(response, error){
-        //POST request successfully sent and response code was returned
-        console.log('response: ', response);
-        console.log('error: ', error);
-        return response;
-      });
-    };
 
-  return {
-    sendPost: sendPost
-  };
-
-}]);

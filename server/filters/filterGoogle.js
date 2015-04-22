@@ -4,7 +4,7 @@ var coord = require('../helpers/coordinateHelpers.js');
 
 var filter = function(requestBody){
   var distance = requestBody.distance;  //Total trip distance
-  var coordObj = requestBody.waypoints; //All of the coordinate points along the route returned by Google
+  var coordArray = requestBody.waypoints; //All of the coordinate points along the route returned by Google
 
   //parse distance into an int
   distance = distance.replace(/\,/g,"").split(" ");
@@ -13,17 +13,10 @@ var filter = function(requestBody){
   //Make a query every 10 miles along the path;
   var distanceBetweenQueries = 10;
 
-  //Convert coordObj from an object to an array to calculate distance between points
-  var coordArray = [];
-  for(var key in coordObj){
-    coordArray.push(coordObj[key]);
-  }
-
   //The coordArray points are not equally distant from one another so distanceBetweenPoints is an approximate value
-  var distanceBetweenPoints = distance / coordArray.length;
-
-  var counter = 0;
+  var distanceBetweenPoints = Math.ceil(coordArray.length / distance);
   var filteredCoords = [];
+
   var dist = 0;
   var temp = 0;
   //Loop through each coordinate along the route and only add the coordinates that are distanceBetweenQueries apart
@@ -37,8 +30,13 @@ var filter = function(requestBody){
       filteredCoords.push(coordArray[i]);
       counter = 0;
     }
-  }
 
+  
+  //Loop through each coordinate along the route and only add the coordinates that are distanceBetweenQueries apart
+  for (var i = 0; i < coordArray.length; i += distanceBetweenPoints){
+    filteredCoords.push(coordArray[i]);
+  }
+  
   return {
     distance: distance,
     filteredCoords:filteredCoords

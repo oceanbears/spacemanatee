@@ -60,11 +60,14 @@ module.exports.parseGoogleCoord = function(googleCoord) {
 // trim the google waypoint coordinate to take out start and end way point so no clustering at 2 ends.
 module.exports.trimGoogleCoord = function(googleCoords, distance) {
   var trimmedCoords = [];
+  var calcDistance = module.exports.calcDistance;
+  var parseGoogleCoord = module.exports.parseGoogleCoord;
+
   //Loop through array and only push the coordinates that are distanceBetweenQueries apart
   if (googleCoords.length > 5) {
     for (var i = 0; i < googleCoords.length; i++) {
-      if (module.exports.calcDistance(module.exports.parseGoogleCoord(googleCoords[i]), module.exports.parseGoogleCoord(googleCoords[0])) >= distance / 20 &&
-        module.exports.calcDistance(module.exports.parseGoogleCoord(googleCoords[i]), module.exports.parseGoogleCoord(googleCoords[googleCoords.length - 1])) >= distance / 20) {
+      if (calcDistance(parseGoogleCoord(googleCoords[i]), parseGoogleCoord(googleCoords[0])) >= distance / 20 &&
+        calcDistance(parseGoogleCoord(googleCoords[i]), parseGoogleCoord(googleCoords[googleCoords.length - 1])) >= distance / 20) {
         trimmedCoords.push(googleCoords[i]);
       }
     }
