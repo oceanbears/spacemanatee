@@ -101,6 +101,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
           console.log("DIRECTIONS RESPONSE: ", response);
           console.log("LENGTH: ", response.routes[0].overview_path.length);
           console.log("OVERVIEW PATH: ", response.routes[0].overview_path);
+          console.log("LEGS: ", response.routes[0].legs);
 
           // objects to be sent to backend
           var sendData = {
