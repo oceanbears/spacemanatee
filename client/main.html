@@ -82,7 +82,9 @@
             <form class="navbar-form navbar-center" name="submitForm" autofill-submit='submit()'> 
               <div class="form-group">
                 <button  type="button" ng-click="locationFinder()" id = "search" class="btn btn-default navbar-btn">My location</button>
-                <img ng-src="{{image.path}}" ng-attr-id="{{'image'}}" style="width: {{image.size.width}}px; height: {{image.size.height}}px"/>
+                <div id = "imageLoader">
+                  <img ng-src="{{image.path}}" ng-attr-id="{{'image'}}" style="width: {{image.size.width}}px; height: {{image.size.height}}px"/>
+                </div>
                 <input type="text" autofill class="form-control submissionfield" id="start" placeholder="Starting location..." ng-model="location.start">
                 <input type="text" autofill class="form-control submissionfield" id="end" placeholder="Destination..." ng-model="location.end">
               </div><br>

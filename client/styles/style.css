@@ -94,10 +94,17 @@ table {
   color: red;
 }
 
-#image {
+.form-group {
+  position: relative;
+  width: 620px;
+  height: 60px;
+}
+
+#imageLoader {
   position: absolute;
-  top:53.5%;
+  width:25px;
+  height:25px;
+  top:20%;
   left: 51%;
   z-index: 1;
 }
-
