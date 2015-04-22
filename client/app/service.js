@@ -4,17 +4,17 @@ angular.module('app.service', [])
   // this function generate a view to display the restaurant image and link
   var renderView = function(i, places) {
       var description = '<div class="descriptionDiv">' +
-          '<a href="'+places[i].url +'" target="_blank">' + '<h1 class="place-name">' + places[i].name + '</h1></a>' +
-          '<div style="padding:5px;font-weight:bold;">' + 'Yelp Rating:&nbsp;&nbsp;' +
-          '<img style="vertical-align:middle;" src="'+ places[i].rating_img_url +'"/>' + '</div>' +
-          '<img src="'+ places[i].image_url +'"/>' +
-          '<div class="snippet">' + places[i].snippet_text + '</div>' +
-          '<a href="' + places[i].url +'" target="_blank"> Visit on Yelp</a>' +
-          '</div>';
-      return description;
+        '<a href="'+places[i].url +'" target="_blank">' + '<h1 class="place-name">' + places[i].name + '</h1></a>' +
+        '<div style="padding:5px;font-weight:bold;">' + 'Yelp Rating:&nbsp;&nbsp;' +
+        '<img style="vertical-align:middle;" src="'+ places[i].rating_img_url +'"/>' + '</div>' +
+        '<img src="'+ places[i].image_url +'"/>' +
+        '<div class="snippet">' + places[i].snippet_text + '</div>' +
+        '<a href="' + places[i].url +'" target="_blank"> Visit on Yelp</a>' +
+        '</div>';
+    return description;
   };
 
-
+  //if the yelp marker is clicked it opens an information window for that stop
   var attachInstructionText = function(marker, text) {
     google.maps.event.addListener(marker, 'click', function() {
       // Open an info window when the marker is clicked on
@@ -23,8 +23,8 @@ angular.module('app.service', [])
     });
   };
 
+  //Place each marker on the map
   var placemarkers = function(places) {
-    //Place each marker on the map
     for (var i = 0; i < places.length; i++) {
        setDelay(i, places);
     }
@@ -67,10 +67,26 @@ angular.module('app.service', [])
     }
   };
 
-
-
-
   return {
     placemarkers: placemarkers
+  };
+})
+
+.factory('Maps', function($http) {
+  //This function sends a POST to the server at route /csearch with all waypoints along route as data
+  var sendPost = function(routeObject){
+    return $http.post('/search', routeObject)
+      .then(function(response, error){
+        //POST request successfully sent and response code was returned
+        console.log('response: ', response);
+        if(error){
+          console.log('error: ', error);
+        }
+        return response;
+      });
+    };
+
+  return {
+    sendPost: sendPost
   };
 });
