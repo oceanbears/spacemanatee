@@ -93,3 +93,11 @@ table {
   font-family: arial, helvetica;
   color: red;
 }
+
+#image {
+  position: absolute;
+  top:53.5%;
+  left: 51%;
+  z-index: 1;
+}
+

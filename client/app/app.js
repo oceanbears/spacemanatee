@@ -34,6 +34,38 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     }
   };
 
+  //button for finding location
+  $scope.locationFinder = function() {
+    //insert locading image
+    $scope.image =  {
+      size: {width: 25, height: 25},
+      path:'./images/loader.gif'
+    };
+    //get current latitude and longitude
+    var lat,lng;
+    navigator.geolocation.getCurrentPosition(function(position) {
+      //set current latitude and longitude
+      lat = position.coords.latitude;
+      lng = position.coords.longitude;
+      //if lng and lat is defined then get address 
+      if (lng && lat) {
+        function getAddress(lat,lng) {
+          var latlng = new google.maps.LatLng(lat, lng);
+          var geocoder = new google.maps.Geocoder();
+          geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              if (results[1]) {
+                $("#image").hide() //hide loader image
+                $("#start").val(results[1].formatted_address); //display address
+              }
+            }
+          });
+        }
+        getAddress(lat,lng);
+      }
+    });
+  };
+
   $scope.submit = function(city) {
     $scope.geoCodeNotSuccessful = false;  // every time when submit button is pressed, reset the geoCodeNotSuccessful to false
     $element.find("main-area").empty();   // clear out the warning messages from previous location input
@@ -51,6 +83,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
       }
 
       // create object to send to Google to generate directions
+      console.log("this is my start location",$scope.location.start);
       var request = {
         origin: $scope.location.start,
         destination: $scope.location.end,
