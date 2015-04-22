@@ -41,7 +41,7 @@
       var markerArray = [];
       var stepDisplay;
 
-      var marker;
+      var clickMarker;
       var infowindow = new google.maps.InfoWindow({ 
         size: new google.maps.Size(150,50)
       });
@@ -61,18 +61,18 @@
 
       var createMarker = function(latlng, name, html) {
         var contentString = html;
-        var marker = new google.maps.Marker({
+        var clickMarker = new google.maps.Marker({
           position: latlng,
           map: map,
           zIndex: Math.round(latlng.lat()*-100000)<<5
         });
-        google.maps.event.addListener(marker, 'click', function() {
+        google.maps.event.addListener(clickMarker, 'click', function() {
           infowindow.setContent(contentString); 
-          infowindow.open(map,marker);
-          getAddress(marker.position.k, marker.position.D);
+          infowindow.open(map,clickMarker);
+          getAddress(clickMarker.position.k, clickMarker.position.D);
         });
-        google.maps.event.trigger(marker, 'click');    
-        return marker;
+        google.maps.event.trigger(clickMarker, 'click');    
+        return clickMarker;
       };
 
 
@@ -93,11 +93,11 @@
 
         google.maps.event.addListener(map, 'click', function(event) {
         //call function to create marker
-          if (marker) {
-            marker.setMap(null);
-            marker = null;
+          if (clickMarker) {
+            clickMarker.setMap(null);
+            clickMarker = null;
           }
-          marker = createMarker(event.latLng, "name", "<b>Location</b><br>"+event.latLng);
+          clickMarker = createMarker(event.latLng, "name", "<b>Location</b><br>"+event.latLng);
         });
 
         var input1 = document.getElementById('start');
