@@ -1,6 +1,6 @@
 angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
 
-.controller('mapCtrl', ['$scope', '$element', 'Maps', 'Utility', function($scope, $element, Maps, Utility) {
+.controller('mapCtrl', ['$scope', '$http', '$element', 'Maps', 'Utility', function($scope, $http, $element, Maps, Utility) {
   //initialize the user input option selector
   $scope.optionSelections = [
     {name: 'Everything', value:""},
@@ -15,6 +15,48 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
   $scope.optionFilter = $scope.optionSelections[1].value;
   //initialize the geoCodeNotSuccessful to be used for determining valid continental destination or not
   $scope.geoCodeNotSuccessful = false;
+
+  //put police car on current location
+  $scope.copLocation = function() {
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        
+        //get current position
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+        // var pos = new google.maps.LatLng(position.coords.latitude,
+        //                                  position.coords.longitude);
+      
+        //send position to "/police"
+        $http.post('/police', pos).
+        success(function(data, response) {
+          console.log('response: ', response);
+        }).
+        error(function(data,response) {
+          console.log('response: ', response);
+          console.log("Failed to send data!");
+        });
+
+
+        //custom police pin on position
+        var infowindow = new google.maps.Marker({
+          map: map,
+          position: pos,
+          animation: google.maps.Animation.DROP,
+          optimized: false,
+          icon: "images/copPin.gif"
+        });
+
+        //center map on current position
+        map.setCenter(pos);
+      }, 
+      function() {
+        handleNoGeolocation(true);
+      });
+    }
+  }
 
   $scope.appendWarningMsg = function() {
     //checks if inputs are valid
@@ -95,7 +137,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     }
 
     $scope.geoCodeNotSuccessful = false;  // every time when submit button is pressed, reset the geoCodeNotSuccessful to false
-    $element.find("main-area").empty();   // clear out the warning messages from previous location input
+   
     console.log("SCOPE ENTIRE: ", $scope.location);
     //clears any markers the user has entered by clicking
     if (clickMarker) {

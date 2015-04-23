@@ -161,6 +161,7 @@
               <select name="serviceSelect" ng-model="optionFilter" ng-options="option.value as option.name for option in optionSelections" class="form-control" id="sel1"></select>
               <button type="submit" class="btn btn-default navbar-btn">Let's Go!</button>
               <button  type="button" ng-click="getDirections()" id="getDir" class="btn btn-default navbar-btn" disabled="true">Show Directions</button>
+              <button  type="button" ng-click="copLocation()" id="cop" class="btn btn-default navbar-btn">Cop</button>
               <br>
               {{distance}}
             </form>
