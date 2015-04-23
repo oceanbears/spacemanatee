@@ -82,8 +82,6 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
   var submitReady = true;
 
   $scope.submit = function(city) {
-    //enable direction button
-    $("#getDir").attr("disabled",false);
     //If a route is already being calculated, do not continue until it completes
     if (!submitReady) {
       return;
@@ -120,8 +118,13 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
 
       //send request to Google Maps Directions API with request object as data
       directionsService.route(request, function(response, status) {
+
         // successfully get the direction based on locations
         if (status === google.maps.DirectionsStatus.OK) {
+           
+          //enable direction button if address is valid
+          $("#getDir").attr("disabled",false);
+
           $scope.geoCodeNotSuccessful=false;  
           //Update the map on index.html
           directionsDisplay.setDirections(response);
@@ -149,7 +152,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
 
           // Send all waypoints along route to server
           Maps.sendPost(sendData)
-          .then(function(res){
+          .then(function(res) {
             console.log("PROMISE OBJ: ", res.data.results);
             // get back recommendations from Yelp and display as markers
             var delay = 300; //delay for placing each marker
@@ -163,6 +166,10 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
             console.log(res.data.results);
           });
         } else {
+
+          //disable direction button since address is invalid
+          $("#getDir").attr("disabled",true);
+
           //Log the status code on error
           console.log("Geocode was not successful: " + status);
           //set the geoCodeNotSuccessful to true
