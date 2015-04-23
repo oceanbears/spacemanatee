@@ -41,13 +41,12 @@
       var markerArray = [];
       var stepDisplay;
       var directionsService = new google.maps.DirectionsService();
-
       var clickMarker;
       var infowindow = new google.maps.InfoWindow({ 
         size: new google.maps.Size(150,50)
       });
 
-      function getAddress(lat,lng) {
+      function getAddress(lat, lng, cb) {
         var latlng = new google.maps.LatLng(lat, lng);
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode({ 'latLng': latlng }, function (results, status) {
@@ -57,21 +56,23 @@
             } else {
               $('#end').val(results[1].formatted_address);
             }
+            address = "<b>Address:</b><br>"+results[1].formatted_address;
+            cb(address);
           }
         });
       }
 
-      var createMarker = function(latlng, name, html) {
-        var contentString = html;
+      var createMarker = function(latlng, name) {
         var clickMarker = new google.maps.Marker({
           position: latlng,
           map: map,
           zIndex: Math.round(latlng.lat()*-100000)<<5
         });
         google.maps.event.addListener(clickMarker, 'click', function() {
-          infowindow.setContent(contentString); 
+          getAddress(clickMarker.position.k, clickMarker.position.D, function(data) {
+            infowindow.setContent(address); 
+          });
           infowindow.open(map,clickMarker);
-          getAddress(clickMarker.position.k, clickMarker.position.D);
         });
         google.maps.event.trigger(clickMarker, 'click');    
         return clickMarker;
@@ -108,7 +109,7 @@
             clickMarker.setMap(null);
             clickMarker = null;
           }
-          clickMarker = createMarker(event.latLng, "name", "<b>Location</b><br>"+event.latLng);
+          clickMarker = createMarker(event.latLng, "name");
         });
 
         var input1 = document.getElementById('start');
@@ -137,7 +138,6 @@
       google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
-
   </head>
   <body>
 
@@ -146,7 +146,7 @@
       <div class="row">
         <div class="col-lg-12">
 
-          <h1 id="title">Road Trip <span>Advisor</span></h1>
+          <h1 id="title">Road Trip Advisor</h1>
 
           <div id='journey'>  
             <form class="navbar-form navbar-center" name="submitForm" autofill-submit='submit()'> 
