@@ -63,6 +63,7 @@ angular.module('app.service', [])
         //Setup the pop-up box that opens when you click a marker
         attachInstructionText(marker, description);
         markerArray[i] = marker;
+        console.log(markerArray);
       }, i * 300);
     }
   };

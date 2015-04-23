@@ -181,6 +181,7 @@ module.exports.createTopResultsJSON = function(yelpResults, distance, numberStop
         checkTopResults(yelpResults[i].businesses[j]);
       }
     }
+    j++;
   }
 
   // combine the best results along the road with the even spread results along the roads
