@@ -1,6 +1,9 @@
 var yelp = require('./yelp');
-var key = require('../api/api_key');
 var coord = require('./coordinateHelpers');
+//key should only be loaded if not in heroku production environment
+if (!process.env.KEY) {
+  var key = require('../api/api_key');
+}
 
 // create yelp client using Oauth
 var yelpClient = yelp.createClient({
