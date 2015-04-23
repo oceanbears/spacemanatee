@@ -152,7 +152,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
 
           // Send all waypoints along route to server
           Maps.sendPost(sendData)
-          .then(function(res){
+          .then(function(res) {
             console.log("PROMISE OBJ: ", res.data.results);
             // get back recommendations from Yelp and display as markers
             var delay = 300; //delay for placing each marker
