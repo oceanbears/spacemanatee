@@ -33,6 +33,20 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     }
   };
 
+  //button for getting directions
+  $scope.getDirections = function() {
+    //change button name and display/hide directions
+    if ($("#getDir").text() === "Show Directions") {
+      $("#getDir").text("Hide Directions");
+      //show directions
+      $("#directions-panel").show();
+    } else {
+      $("#getDir").text("Show Directions");
+      //hide directions
+      $("#directions-panel").hide();
+    }
+  };
+
   //button for finding location
   $scope.locationFinder = function() {
     //insert locading image
@@ -68,6 +82,8 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
   var submitReady = true;
 
   $scope.submit = function(city) {
+    //enable direction button
+    $("#getDir").attr("disabled",false);
     //If a route is already being calculated, do not continue until it completes
     if (!submitReady) {
       return;
