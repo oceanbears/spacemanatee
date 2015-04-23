@@ -39,6 +39,7 @@
       var map;
       var directionsDisplay;
       var markerArray = [];
+      var clickMarkerArray =[];
       var stepDisplay;
       var directionsService = new google.maps.DirectionsService();
       var clickMarker;
@@ -105,11 +106,12 @@
 
         google.maps.event.addListener(map, 'click', function(event) {
         //call function to create marker
-          if (clickMarker) {
-            clickMarker.setMap(null);
-            clickMarker = null;
+          if (clickMarkerArray[1]) {
+            clickMarkerArray[1].setMap(null);
+            var removed = clickMarkerArray.splice(1,1);
           }
           clickMarker = createMarker(event.latLng, "name");
+          clickMarkerArray.push(clickMarker);
         });
 
         var input1 = document.getElementById('start');
