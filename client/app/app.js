@@ -1,7 +1,6 @@
 angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
 
 .controller('mapCtrl', ['$scope', '$element', 'Maps', 'Utility', function($scope, $element, Maps, Utility) {
-
   //initialize the user input option selector
   $scope.optionSelections = [
     {name: 'Everything', value:""},
@@ -66,7 +65,16 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     });
   };
 
+  var submitReady = true;
+
   $scope.submit = function(city) {
+    //If a route is already being calculated, do not continue until it completes
+    if (!submitReady) {
+      return;
+    } else {
+      submitReady = false;
+    }
+
     $scope.geoCodeNotSuccessful = false;  // every time when submit button is pressed, reset the geoCodeNotSuccessful to false
     $element.find("main-area").empty();   // clear out the warning messages from previous location input
     console.log("SCOPE ENTIRE: ", $scope.location);
@@ -128,7 +136,11 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
           .then(function(res){
             console.log("PROMISE OBJ: ", res.data.results);
             // get back recommendations from Yelp and display as markers
-            Utility.placemarkers(res.data.results);
+            var delay = 300; //delay for placing each marker
+            Utility.placemarkers(res.data.results, delay);
+            setTimeout(function() {
+              submitReady = true;
+            }, delay);
             $scope.distance = "You have  " + res.data.results.length + " spots to pick from in " + 
             sendData.distance + ".";
             $scope.topTen = res.data.topTen;
@@ -139,6 +151,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
           console.log("Geocode was not successful: " + status);
           //set the geoCodeNotSuccessful to true
 
+          submitReady = true;
           $scope.geoCodeNotSuccessful = true;
           $scope.appendWarningMsg($scope.geoCodeNotSuccessful); // append the warning message to main.html
         }
