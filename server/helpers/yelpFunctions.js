@@ -55,14 +55,8 @@ module.exports.searchYelp = function (req, res, coords, distance, callback) {
   // yelp search parameter configuration
   yelpProperty.term = req.body.optionFilter;           // Type of business (food, restaurants, bars, hotels, etc.)
 
-  //This is for changing the radius filter depending on the distance of the trip.
-  // if (distance <= 20) {
-  //   yelpProperty.radius_filter = 0.8 * 1609.34 ;
-  // } else if (distance <= 40) {
-  //   yelpProperty.radius_filter = 2.5 * 1609.34;
-  // } else {
-  //   yelpProperty.radius_filter = 5 * 1609.34;
-  // }
+  //Set the distance of the yelp search
+  yelpProperty.radius_filter = yelpProperty.radius_filter * Math.min(Math.ceil(distance/20), 5);
 
   //Request yelp for each point along route that is returned by filterGoogle.js
   for(var i = 0; i < coords.length; i++){
