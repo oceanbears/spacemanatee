@@ -22,12 +22,26 @@ html, body, #map-canvas {
   padding: 5px 15px 15px 15px;
 }
 
-#map-canvas {
-  border: solid 3px #9ba894;
-  margin-left: auto;
-  margin-right: auto;
-  width: 90%;
+#mapContainer {
+  width:90%;
   height: 500px;
+
+}
+
+#map-canvas {
+  position: fixed;
+  border: solid 3px #9ba894;
+  width: 100%;
+  height: 500px;
+  z-index: 0;
+}
+
+#directions-panel {
+  position: absolute;
+  float: right;
+  width: 30%;
+  overflow: auto;
+  z-index: 1;
 }
 
 body {

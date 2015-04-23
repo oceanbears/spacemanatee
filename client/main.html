@@ -40,15 +40,14 @@
       var directionsDisplay;
       var markerArray = [];
       var stepDisplay;
+      var directionsService = new google.maps.DirectionsService();
 
       function initialize() {
 
         var mapOptions = {
           center: new google.maps.LatLng(37.82, -122.30),
           zoom: 10,
-          disableDefaultUI:true,
-          scaleControl: true,
-          mapTypeControl: true,
+          disableDefaultUI:false,
           mapTypeControlOptions: {
             style: google.maps.MapTypeControlStyle.DEFAULT,
             mapTypeIds: [
@@ -59,8 +58,7 @@
           }, 
         };
 
-        map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
         var input1 = document.getElementById('start');
         var input2 = document.getElementById('end');
@@ -71,8 +69,20 @@
         stepDisplay = new google.maps.InfoWindow();
 
         directionsDisplay.setMap(map);
+        directionsDisplay.setPanel(document.getElementById('directions-panel'));
       }
-
+      function calcRoute() {
+        var request = {
+          origin: document.getElementById('start').value,
+          destination: document.getElementById('end').value,
+          travelMode: google.maps.TravelMode.DRIVING
+        };
+        directionsService.route(request, function(response, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+          }
+        });
+      }
       google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
@@ -107,8 +117,10 @@
 
       <div id="warningMsg"></div></div>
       <main-area></main-area>
-      <div id="map-canvas"></div><br>
-
+      <div id="mapContainer">
+        <div id="directions-panel"></div>
+        <div id="map-canvas"></div>
+      </div>
       <div class="row">
         <div class="col-lg-12">
           <div id="topTen" style="margin-left: 20%;margin-right: 20%;vertical-align: middle;text-align: center;">
