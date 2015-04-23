@@ -53,6 +53,10 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
   };
 
   //button for finding location
+  var currentLocationMarker;
+  var watchId; //Watcher for current position
+  var currLat;
+  var currLong;
   $scope.locationFinder = function() {
     //insert locading image
     $scope.image =  {
@@ -61,14 +65,18 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     };
     //get current latitude and longitude
     var lat,lng;
+    var makeGooglePos = function(position) {
+      return new google.maps.LatLng( position.coords.latitude,
+                                     position.coords.longitude );
+    }
     navigator.geolocation.getCurrentPosition(function(position) {
       //set current latitude and longitude
       lat = position.coords.latitude;
       lng = position.coords.longitude;
       //if lng and lat is defined then get address 
       if (lng && lat) {
-        function getAddress(lat,lng) {
-          var latlng = new google.maps.LatLng(lat, lng);
+        function getAddress(position) {
+          var latlng = makeGooglePos(position);
           var geocoder = new google.maps.Geocoder();
           geocoder.geocode({ 'latLng': latlng }, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
@@ -76,12 +84,38 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
                 $("#image").hide(); //hide loader image
                 $("#start").val(results[1].formatted_address); //display address
               }
+            } else {
+              console.log('error with geolocater: ', status);
             }
           });
+          map.setCenter(latlng);
         }
-        getAddress(lat,lng);
+        getAddress(position);
       }
     });
+    //Watch the current location and keep a marker on the map. Save the current position
+    if (!watchId) {
+      watchId = navigator.geolocation.watchPosition(function(position) {
+        if (position.coords.latitude && position.coords.longitude) {
+          //These are the saved current position as it updates
+          currLat = position.coords.latitude;
+          currLong = position.coords.longitude;
+          var latlng = makeGooglePos(position);
+          if (currentLocationMarker) {
+            currentLocationMarker.setPosition(latlng);
+          } else {
+            currentLocationMarker = new google.maps.Marker({
+              position: latlng,
+              map: map,
+              title: 'Current Position',
+              animation: google.maps.Animation.BOUNCE,
+              icon: 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+            });
+          }
+        }
+      });
+    }
+
   };
 
   var submitReady = true;
