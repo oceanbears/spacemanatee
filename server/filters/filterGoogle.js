@@ -10,17 +10,14 @@ var filter = function(requestBody){
   distance = distance.replace(/\,/g,"").split(" ");
   distance = parseInt(distance[0]);
 
-  //Make a query every 10 miles along the path;
-  var distanceBetweenQueries = 10;
+  //Make a query every 10 miles along the path or every 1/10th of the path;
+  var distanceBetweenQueries = Math.min(distance/10, 10);
 
   //Convert coordObj from an object to an array to calculate distance between points
   var coordArray = [];
   for(var key in coordObj){
     coordArray.push(coordObj[key]);
   }
-
-  //The coordArray points are not equally distant from one another so distanceBetweenPoints is an approximate value
-  var distanceBetweenPoints = distance / coordArray.length;
 
   var counter = 0;
   var filteredCoords = [];

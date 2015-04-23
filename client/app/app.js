@@ -136,12 +136,15 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
           .then(function(res){
             console.log("PROMISE OBJ: ", res.data.results);
             // get back recommendations from Yelp and display as markers
-            Utility.placemarkers(res.data.results);
+            var delay = 300; //delay for placing each marker
+            Utility.placemarkers(res.data.results, delay);
+            setTimeout(function() {
+              submitReady = true;
+            }, delay);
             $scope.distance = "You have  " + res.data.results.length + " spots to pick from in " + 
             sendData.distance + ".";
             $scope.topTen = res.data.topTen;
             console.log(res.data.results);
-            submitReady = true;
           });
         } else {
           //Log the status code on error
