@@ -16,20 +16,25 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
   //initialize the geoCodeNotSuccessful to be used for determining valid continental destination or not
   $scope.geoCodeNotSuccessful = false;
 
-  $scope.appendWarningMsg = function(isInvalid) {
-    // invalid message template
-    var pInvalid = angular.element("<p id='warningMsg'/>");
-    pInvalid.text("Please choose a continental location and resubmit");
-    // valid message template
-    var pValid = angular.element("<p id='warningMsg'/>");
-    pValid.text("");
-    //check to see if the location entered is invalid
-    //if location is invalid, then append invalid message 
-    // else, append a blank message 
-    if (isInvalid) {
-      $element.find("main-area").append(pInvalid);
+  $scope.appendWarningMsg = function() {
+    //checks if inputs are valid
+    //check if start input is valid
+    if ($("#start").val() === "") {
+      //if is not valid, change border to red
+      $("#start").css({border:"3px solid red" });
+      //change placeholder text
+      $("#start").attr("placeholder", "Please enter your starting location");
     } else {
-      $element.find("main-area").append(pValid);
+      $("#start").css({border:"1px solid rgb(153, 153, 153)"});
+    }
+    //end if start input is valid
+    if ($("#end").val() === "") {
+      //if is not valid, change border to red
+      $("#end").css({border:"3px solid red" });
+      //change placeholder text
+      $("#end").attr("placeholder", "Please enter your destination location");
+    } else {
+      $("#end").css({border:"1px solid rgb(153, 153, 153)"});
     }
   };
 
