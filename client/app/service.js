@@ -23,17 +23,17 @@ angular.module('app.service', [])
     });
   };
 
-  var placemarkers = function(places) {
+  var placemarkers = function(places, delay) {
     //Place each marker on the map
     for (var i = 0; i < places.length; i++) {
        setDelay(i, places);
     }
     // set delay for dropping each marker
-    function setDelay(i, places) {
+    function setDelay(j, places) {
       setTimeout(function() {
-        var lat = places[i].location.coordinate.latitude;
-        var lng = places[i].location.coordinate.longitude;
-        var description = renderView(i, places);
+        var lat = places[j].location.coordinate.latitude;
+        var lng = places[j].location.coordinate.longitude;
+        var description = renderView(j, places);
         
         //images display upon selection type
         var img;
@@ -62,8 +62,8 @@ angular.module('app.service', [])
 
         //Setup the pop-up box that opens when you click a marker
         attachInstructionText(marker, description);
-        markerArray[i] = marker;
-      }, i * 300);
+        markerArray[j] = marker;
+      }, i * delay);
     }
   };
 

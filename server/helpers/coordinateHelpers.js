@@ -7,11 +7,27 @@ if (typeof(Number.prototype.toRad) === "undefined") {
 
 // calculate the distance between 2 waypoints, given their latitudes and longitudes, return distance in miles
 module.exports.calcDistance = function(pt1, pt2) {
+  var lat1;
+  var lon1;
+  var lat2;
+  var lon2;
+  if (Array.isArray(pt1)) {
+    //parse the data if it comes from the filterGoogle script in an array format
+    lat1 = parseFloat(pt1[0]);
+    lon1 = parseFloat(pt1[1]);
+    lat2 = parseFloat(pt2[0]);
+    lon2 = parseFloat(pt2[1]);
+  } else if (pt1.location.coordinate && pt2.location.coordinate) {
+    //parse the data if it comes from the yelp api
+    var lat1 = pt1.location.coordinate['latitude'];
+    var lon1 = pt1.location.coordinate['longitude'];
+    var lat2 = pt2.location.coordinate['latitude'];
+    var lon2 = pt2.location.coordinate['longitude'];
+  } else {
+    //in case there is no coordinate defined in the object
+    return 0;
+  }
   var R = 6371; // earth radius, in km
-  var lat1 = pt1.location.coordinate['latitude'];
-  var lon1 = pt1.location.coordinate['longitude'];
-  var lat2 = pt2.location.coordinate['latitude'];
-  var lon2 = pt2.location.coordinate['longitude'];
 
 
   var dLat = (lat2 - lat1).toRad();
