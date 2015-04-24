@@ -37,8 +37,8 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
       pos = {
           lat: currLat,
           lng: currLong
-        }
-        sendData();
+      };
+      sendData();
     }
 
     if(navigator.geolocation) {
