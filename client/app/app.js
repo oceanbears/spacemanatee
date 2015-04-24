@@ -48,14 +48,14 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
         pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
-        }
+        };
         sendData();
       }, 
       function() {
         handleNoGeolocation(true);
       });
     }
-  }
+  };
 
   $scope.appendWarningMsg = function() {
     //checks if inputs are valid
@@ -164,7 +164,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
               var pos = {
                 lat: data[i].lat,
                 lng: data[i].lng
-              }
+              };
               var infowindow = new google.maps.Marker({
                 map: map,
                 position: pos,
@@ -198,7 +198,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
    
     console.log("SCOPE ENTIRE: ", $scope.location);
     //clears any markers the user has entered by clicking
-    if (clickMarkerArray) {
+    if (clickMarkerArray.length !== '[]') {
       clickMarkerArray[0].setMap(null);
       clickMarkerArray[1].setMap(null);
       var cleared = clickMarkerArray.splice(0);
