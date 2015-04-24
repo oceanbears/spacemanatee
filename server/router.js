@@ -25,18 +25,34 @@ router.get('/police', function (req, res) {
   var lat = parseFloat(req.query.lat);
   var lng = parseFloat(req.query.lng);
   
-  var data = storage.findNearest(lat, lng);
-  
-  res.send(data);
+  storage.findNearest(lat, lng, function(err, data) {
+    if (err) {
+      console.error('Error during GET: ', err);
+      res.status(500).send(err);
+    } else {
+      console.log('Retrieved from DB');
+      console.log(data.rows);
+      res.status(200).send(data.rows);
+    }
+  });
 });
 
 router.post('/police', function (req, res) {
   console.log('POST to /police');
+  var lat = req.body.lat;
+  var lng = req.body.lng;
   if (typeof req.body.lat === 'number' && typeof req.body.lng === 'number') {
-    storage.add(req.body.lat, req.body.lng);
-    res.status(201).send('Location saved');
+    storage.add(lat, lng, function(err, result) {
+      if (err) {
+        console.error('Error during POST: ', err);
+        res.status(500).send(err);
+      } else {
+        console.log('Inserted into DB')
+        res.status(201).send('Location saved');
+      }
+    });
   } else {
-    res.status(500).send('Lat and Long are not valid');
+    res.status(500).send('Lat and Long are invalid');
   }
 });
 
