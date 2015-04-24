@@ -68,7 +68,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     var makeGooglePos = function(position) {
       return new google.maps.LatLng( position.coords.latitude,
                                      position.coords.longitude );
-    }
+    };
     navigator.geolocation.getCurrentPosition(function(position) {
       //set current latitude and longitude
       lat = position.coords.latitude;
@@ -132,9 +132,10 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     $element.find("main-area").empty();   // clear out the warning messages from previous location input
     console.log("SCOPE ENTIRE: ", $scope.location);
     //clears any markers the user has entered by clicking
-    if (clickMarker) {
-      clickMarker.setMap(null);
-      clickMarker = null;
+    if (clickMarkerArray) {
+      clickMarkerArray[0].setMap(null);
+      clickMarkerArray[1].setMap(null);
+      var cleared = clickMarkerArray.splice(0);
     }
     var startGeo, endGeo;
 
