@@ -15,7 +15,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
   $scope.optionFilter = $scope.optionSelections[1].value;
   //initialize the geoCodeNotSuccessful to be used for determining valid continental destination or not
   $scope.geoCodeNotSuccessful = false;
-
+  
   //put police car on current location
   $scope.copLocation = function() {
     //current position
