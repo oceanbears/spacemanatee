@@ -51,8 +51,8 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
         }
         sendData();
       }, 
-      function() {
-        handleNoGeolocation(true);
+      function(error) {
+        console.log('Geo error: ', error)
       });
     }
   }

@@ -2,7 +2,9 @@
 //Police locations are stored into a hashmap. Keys are in the format of 'lat,lng',
 //where the lat and lng are rounded to the nearest tenth. Each key holds a bucket that contains
 //the coordinates of all of the cops in that section
+var db = require('./db')
 var data = {};
+var id = 0;
 
 var roundCoordinates = function(lat, lng) {
   var latTenth = Math.round(lat * 10) / 10;
@@ -17,7 +19,15 @@ module.exports.add = function(lat, lng) {
   if (!data[key]) {
     data[key] = [];
   }
-  data[key].push({lat: lat, lng: lng});
+  var sighting = {
+    lat: lat,
+    lng: lng,
+    time: Date.now(),
+    id: id
+  };
+  id++;
+  console.log(sighting);
+  data[key].push(sighting);
 };
 
 module.exports.findNearest = function(lat, lng) {
