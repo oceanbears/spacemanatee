@@ -143,19 +143,25 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
         }
 
         //get police locations from server
-        $http.get('/police').
+        $http.get('/police', {params: {lat: currLat,lng: currLong}}).
           success(function(data, status, headers, config) {
             console.log(status);
-            console.log("data",data);
+            
             //custom police pin on position
-            var infowindow = new google.maps.Marker({
-              map: map,
-              position: latlng,//pos,
-              animation: google.maps.Animation.DROP,
-              optimized: false,
-              zIndex: 100,
-              icon: "images/copPin.gif"
-            });
+            for (var i = 0; i <data.length; i++) {
+              var pos = {
+                lat: data[i].lat,
+                lng: data[i].lng
+              }
+              var infowindow = new google.maps.Marker({
+                map: map,
+                position: pos,
+                animation: google.maps.Animation.DROP,
+                optimized: false,
+                zIndex: 100,
+                icon: "images/copPin.gif"
+              });
+            }
           }).
           error(function(data, status) {
             console.log("status");

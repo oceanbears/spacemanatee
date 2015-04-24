@@ -17,33 +17,33 @@ module.exports.add = function(lat, lng) {
   if (!data[key]) {
     data[key] = [];
   }
-  data[key].push([lat, lng]);
+  data[key].push({lat: lat, lng: lng});
 };
 
 module.exports.findNearest = function(lat, lng) {
   //Search for the four nearest lat and lng segments and return all police coordinates
   //will add the next closest tenth lat and lng
   var coords = roundCoordinates(lat, lng);
-  
+
   var nextLat;
   var nextLong;
   if (Math.round(lat * 100) / 10 === coords[0]) {
-    nextLat = coords[0];
+    nextLat = Math.abs(coords[0] - 0.1) * (coords[0] > 0 ? 1 : -1);
   } else {
     nextLat = Math.abs(coords[0] + 0.1) * (coords[0] > 0 ? 1 : -1);
   }
 
   if (Math.round(lng * 100) / 10 === coords[1]) {
-    nextLng = coords[1];
+    nextLng = Math.abs(coords[1] - 0.1) * (coords[1] > 0 ? 1 : -1);
   } else {
-    nextLng = Math.abs(coords[0] + 0.1) * (coords[0] > 0 ? 1 : -1);
+    nextLng = Math.abs(coords[1] + 0.1) * (coords[1] > 0 ? 1 : -1);
   }
 
   //create the four nearest quadrants to lookup
   var lookup = [
-    [lat, lng].toString(),
-    [nextLat, lng].toString(),
-    [lat, nextLng].toString(),
+    [coords[0], coords[1]].toString(),
+    [nextLat, coords[1]].toString(),
+    [coords[0], nextLng].toString(),
     [nextLat, nextLng].toString()
   ];
 
