@@ -18,25 +18,38 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
 
   //put police car on current location
   $scope.copLocation = function() {
+    //current position
+    var pos;
+
+    function sendData() {
+      //send position to "/police"
+      $http.post('/police', pos).
+      success(function(data, response) {
+        console.log('response: ', response);
+      }).
+      error(function(data,response) {
+        console.log('response: ', response);
+        console.log("Failed to send data!");
+      });
+    }
+
+    if (currLat && currLong) {
+      pos = {
+        lat: currLat,
+        lng: currLong
+      };
+      sendData();
+    }
+
     if(navigator.geolocation) {
 
       navigator.geolocation.getCurrentPosition(function(position) {
-
         //get current position
-        var pos = {
+        pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }
-      
-        //send position to "/police"
-        $http.post('/police', pos).
-        success(function(data, response) {
-          console.log('response: ', response);
-        }).
-        error(function(data,response) {
-          console.log('response: ', response);
-          console.log("Failed to send data!");
-        });
+        sendData();
       }, 
       function() {
         handleNoGeolocation(true);
@@ -145,8 +158,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
         //get police locations from server
         $http.get('/police', {params: {lat: currLat,lng: currLong}}).
           success(function(data, status, headers, config) {
-            console.log(status);
-            
+            console.log("status: ",status);
             //custom police pin on position
             for (var i = 0; i <data.length; i++) {
               var pos = {
@@ -158,13 +170,14 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
                 position: pos,
                 animation: google.maps.Animation.DROP,
                 optimized: false,
+                title: 'Police Position',
                 zIndex: 100,
                 icon: "images/copPin.gif"
               });
             }
           }).
           error(function(data, status) {
-            console.log("status");
+            console.log("status: ",status);
           });
       });
     }
