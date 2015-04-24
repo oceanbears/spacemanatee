@@ -133,10 +133,10 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     console.log("SCOPE ENTIRE: ", $scope.location);
     //clears any markers the user has entered by clicking
     if (clickMarkerArray) {
-        clickMarkerArray[0].setMap(null);
-        clickMarkerArray[1].setMap(null);
-        var cleared = clickMarkerArray.splice(0);
-      }
+      clickMarkerArray[0].setMap(null);
+      clickMarkerArray[1].setMap(null);
+      var cleared = clickMarkerArray.splice(0);
+    }
     var startGeo, endGeo;
 
     calcRoute();
