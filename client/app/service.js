@@ -49,7 +49,7 @@ angular.module('app.service', [])
           img = "images/gasPin.png";
         } else if ($('#sel1').val() === "6") {
           img = "images/petPin.png";
-        } else {
+        }else {
           img = "images/elsePin.png";
         }
 
@@ -57,6 +57,7 @@ angular.module('app.service', [])
           map: map,
           position: new google.maps.LatLng(lat,lng),
           animation: google.maps.Animation.DROP,
+          optimized: false,
           icon: img
         });
 

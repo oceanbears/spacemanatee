@@ -22,18 +22,18 @@ router.get('/main', function (req, res) {
 
 router.get('/police', function (req, res) {
   console.log('GET to /police: ', req.query);
-  var lat = req.query.lat;
-  var long = req.query.long;
+  var lat = parseFloat(req.query.lat);
+  var lng = parseFloat(req.query.lng);
   
-  var data = storage.findNearest(lat, long);
+  var data = storage.findNearest(lat, lng);
   
   res.send(data);
 });
 
 router.post('/police', function (req, res) {
   console.log('POST to /police');
-  if (typeof req.body.lat === 'number' && typeof req.body.long === 'number') {
-    storage.add(req.body.lat, req.body.long);
+  if (typeof req.body.lat === 'number' && typeof req.body.lng === 'number') {
+    storage.add(req.body.lat, req.body.lng);
     res.status(201).send('Location saved');
   } else {
     res.status(500).send('Lat and Long are not valid');
