@@ -19,15 +19,14 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
   //put police car on current location
   $scope.copLocation = function() {
     if(navigator.geolocation) {
+
       navigator.geolocation.getCurrentPosition(function(position) {
-        
+
         //get current position
         var pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }
-        // var pos = new google.maps.LatLng(position.coords.latitude,
-        //                                  position.coords.longitude);
       
         //send position to "/police"
         $http.post('/police', pos).
@@ -38,19 +37,6 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
           console.log('response: ', response);
           console.log("Failed to send data!");
         });
-
-
-        //custom police pin on position
-        var infowindow = new google.maps.Marker({
-          map: map,
-          position: pos,
-          animation: google.maps.Animation.DROP,
-          optimized: false,
-          icon: "images/copPin.gif"
-        });
-
-        //center map on current position
-        map.setCenter(pos);
       }, 
       function() {
         handleNoGeolocation(true);
@@ -155,6 +141,25 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
             });
           }
         }
+
+        //get police locations from server
+        $http.get('/police').
+          success(function(data, status, headers, config) {
+            console.log(status);
+            console.log("data",data);
+            //custom police pin on position
+            var infowindow = new google.maps.Marker({
+              map: map,
+              position: latlng,//pos,
+              animation: google.maps.Animation.DROP,
+              optimized: false,
+              zIndex: 100,
+              icon: "images/copPin.gif"
+            });
+          }).
+          error(function(data, status) {
+            console.log("status");
+          });
       });
     }
 
