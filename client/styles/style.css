@@ -4,61 +4,55 @@ html,body,div,span,applet,object,iframe,a,abbr,acronym,address,big,cite,code,del
 #title {
   text-align: center;
   float: center;
-  padding: 15px 0 15px 0;
 }
 
 #journey {
   text-align: center;
+  height: 300px;
+  background-color: white;
+  padding-top: 100px;
+  margin-bottom: 100px;
 }
 
-.submissionfield {
-  min-width: 250px;
-  border: 1px solid #999999;
-  padding: 5px;
-}
-
-html, body, #map-canvas {
-  height: 92%;
-  padding: 5px 15px 15px 15px;
-}
-
-#mapContainer {
-  width:90%;
-  height: 500px;
-  margin-right: auto;
-  margin-left: auto;
-}
 
 #map-canvas {
-  border: solid 3px #9ba894;
   width: 100%;
   height: 500px;
+  z-index: 0;
 }
 
+
+
 #directions-panel {
+  margin-top: 214px;
   display: none;
-  border: solid 3px #9ba894;
-  background-color: white;
   position: absolute;
+  background-color: white;
   overflow: auto;
   width: 30%;
   height: 500px;
   z-index: 1;
-}
-
-body {
-  background-image:url('../images/ricepaper_v3.png');
+  border-right: 1px solid black;
 }
 
 h1 {
-  font-family: arial, helvetica;
-  font-size: 3em;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 100;
+  font-size: 4em;
 }
+
 h1 span {
-  font-family: arial, helvetica;
+  font-family: 'Raleway', sans-serif;
   font-size: 0.9em;
-  position:relative;
-  top:1px;
+}
+
+h2{
+  font-family: 'Raleway', sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.5em;
+  color: #74C1E8;
+
 }
 
 .descriptionDiv {
@@ -75,13 +69,11 @@ h1 span {
   font-size: 2.0em;
 }
 
-.oddTop10 {
-  background-image:url('../images/travel.jpg');
-  background-size: 50%, 50%;
-}
-
-.evenTop10 {
-  background-image:url('../images/food.png');
+.oddTop10, .evenTop10 {
+  color: black;
+  padding: 5px 5px 5px 5px;
+  text-align: left;
+  text-indent: 400;
 }
 
 table {
@@ -89,7 +81,32 @@ table {
 }
 
 #topTenList {
-  border: 1px solid #999999;;
+  margin-bottom: 10px;
+  background-color: #9CE8A1;
+  font-weight: bold;
+  font-size: 1.3em;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.venueInfo{
+  margin-top: 30px;
+  font-family: Helvetica;
+  margin-left: 50px;
+  text-align: center;
+}
+
+.stars{
+  padding-top: 30px;
+}
+.hashtag, .hashtag>h1{
+  float: left;
+  font-size: 1.5em;
+  font-family: "Raleway", sans-serif;
+  font-weight: lighter;
+  font-style: italic;
+  margin-right: 10px;
+  opacity: 50%;
 }
 .snippet {
   display: block;
@@ -106,14 +123,24 @@ table {
   vertical-align: middle;
   text-align: center;
   font-size: 2.0em;
-  font-family: arial, helvetica;
+  font-family: 'Raleway', sans-serif;
   color: red;
 }
 
 .form-group {
-  position: relative;
-  width: 620px;
-  height: 60px;
+  float: left;
+  width: 50%;
+  height: 300px;
+  margin-bottom: 100px;
+}
+
+
+.rightBlock{
+  float: right;
+  width: 50%;
+  height: 300px;
+  display: block;
+  margin-bottom: 100px;
 }
 
 #imageLoader {
@@ -123,4 +150,119 @@ table {
   top:20%;
   left: 51%;
   z-index: 1;
+}
+
+.header{
+  background-color: #F4B741;
+  height: 600px;
+  width: 100%;
+}
+
+.logo{
+  margin-top: 70px; 
+  margin-left: 28%;
+}
+
+.locationSubmit{
+  margin-top: 150px;
+}
+
+#button1{
+  margin-top: 30px;
+}
+
+button {
+  min-width: 50px;
+  max-width: 250px;
+  margin: 1em;
+  padding: 1em 2em;
+  border: none;
+  background: none;
+  color: inherit;
+  vertical-align: middle;
+  z-index: 1;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-radius: 15px;
+  border: 2px solid;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:hover{
+  background-color: #DEE7E8;
+}
+
+button > span {
+  vertical-align: middle;
+}
+
+select {
+  margin-top: 40px;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50px' height='50px'><polyline points='46.139,15.518 25.166,36.49 4.193,15.519'/></svg>");
+  /*background-color:#3498DB;*/
+  background-repeat:no-repeat;
+  background-position: right 10px top 15px;
+  background-size: 16px 16px;
+  color:black;
+  padding:12px;
+  width:auto;
+  letter-spacing: 2px;
+  font-size:14px;
+  font-weight:500;
+  /*color:#fff;*/
+  text-align:center;
+  text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);
+  border-radius:3px;
+  -webkit-border-radius:3px;
+  -webkit-appearance: none;
+  border:2px solid black;
+  outline:0;
+  -webkit-transition:0.3s ease all;
+     -moz-transition:0.3s ease all;
+      -ms-transition:0.3s ease all;
+       -o-transition:0.3s ease all;
+          transition:0.3s ease all;
+}
+
+select:hover{
+  background-color: #DEE7E8;
+}
+
+#route{
+  margin-bottom: 25px;
+}
+
+input{
+  padding-left: 15px;
+  background: #fff;
+  border: 2px solid black;
+  margin-top: 30px;
+  margin-bottom: 18px;
+  padding: 13px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Raleway', sans-serif;
+  letter-spacing: 2px;
+}
+
+.results{
+  padding-top: 100px;
+}
+
+.top10title{
+  margin-bottom: 100px;
+}
+
+a{
+  text-decoration: none;
+  font-family: helvetica;
+  font-weight: bold;
+  font-size: .8em;
+  color: #6295FF;
 }
