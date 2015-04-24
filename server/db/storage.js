@@ -2,6 +2,8 @@
 //Police locations are stored into a hashmap. Keys are in the format of 'lat,lng',
 //where the lat and lng are rounded to the nearest tenth. Each key holds a bucket that contains
 //the coordinates of all of the cops in that section
+
+//For persistant data storage, use db. Else, these methods are for nonpersistant storage
 var db = require('./db')
 var data = {};
 var id = 0;
