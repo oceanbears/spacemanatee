@@ -35,8 +35,8 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
 
     if (currLat && currLong) {
       pos = {
-          lat: currLat,
-          lng: currLong
+        lat: currLat,
+        lng: currLong
       };
       sendData();
     }
