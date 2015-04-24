@@ -48,14 +48,14 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
         pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
-        }
+        };
         sendData();
       }, 
       function() {
         handleNoGeolocation(true);
       });
     }
-  }
+  };
 
   $scope.appendWarningMsg = function() {
     //checks if inputs are valid
@@ -164,7 +164,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
               var pos = {
                 lat: data[i].lat,
                 lng: data[i].lng
-              }
+              };
               var infowindow = new google.maps.Marker({
                 map: map,
                 position: pos,
