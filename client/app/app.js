@@ -51,8 +51,8 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
         }
         sendData();
       }, 
-      function() {
-        handleNoGeolocation(true);
+      function(error) {
+        console.log('Geo error: ', error)
       });
     }
   }
@@ -198,11 +198,9 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
    
     console.log("SCOPE ENTIRE: ", $scope.location);
     //clears any markers the user has entered by clicking
-    if (clickMarkerArray) {
-      clickMarkerArray[0].setMap(null);
-      clickMarkerArray[1].setMap(null);
-      var cleared = clickMarkerArray.splice(0);
-    }
+    clickMarkerArray.forEach(function(el) {
+      el.setMap(null);
+    });
     var startGeo, endGeo;
 
     calcRoute();
