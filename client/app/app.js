@@ -1,6 +1,7 @@
 angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
 
 .controller('mapCtrl', ['$scope', '$http', '$element', 'Maps', 'Utility', function($scope, $http, $element, Maps, Utility) {
+  $scope.count = 0;
   //initialize the user input option selector
   $scope.optionSelections = [
     {name: 'Everything', value:""},
@@ -82,12 +83,12 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
   //button for getting directions
   $scope.getDirections = function() {
     //change button name and display/hide directions
-    if ($("#getDir").text() === "Show Directions") {
-      $("#getDir").text("Hide Directions");
+    if ($("#getDir").text() === "route") {
+      $("#getDir").text("hide route");
       //show directions
       $("#directions-panel").show();
     } else {
-      $("#getDir").text("Show Directions");
+      $("#getDir").text("route");
       //hide directions
       $("#directions-panel").hide();
     }
@@ -198,9 +199,11 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
    
     console.log("SCOPE ENTIRE: ", $scope.location);
     //clears any markers the user has entered by clicking
-    clickMarkerArray.forEach(function(el) {
-      el.setMap(null);
-    });
+    if (clickMarkerArray[0] && clickMarkerArray[1]) {
+      clickMarkerArray[0].setMap(null);
+      clickMarkerArray[1].setMap(null);
+      var cleared = clickMarkerArray.splice(0);
+    }
     var startGeo, endGeo;
 
     calcRoute();
