@@ -70,7 +70,7 @@ module.exports.searchYelp = function (req, res, coords, distance, callback) {
         ll: coords[i]
       }, function(error, data) {
         if (error) {
-          console.log(error);
+          console.log('Error with yelp request:', error);
         }
         //Push the data returned from Yelp into yelpResults array
         yelpResults[i] = data;
@@ -133,7 +133,7 @@ module.exports.createTopResultsJSON = function(yelpResults, distance, numberStop
 
   //Iterate over all results, looking at the top business for each location that Yelp searched.
   //Add it to the top result or the even spread results if it meets certain criteria to be matched.
-  //After, if there needs to be more results to get the top10 results, iterate over looking at the 
+  //After, if there needs to be more results to get the top10 results, iterate over looking at the
   //  next highest results of each Yelp location searched.
   for (var i = 0; i < yelpResults.length; i++) {
     //Calculating the distance from one search point to the other
@@ -164,7 +164,7 @@ module.exports.createTopResultsJSON = function(yelpResults, distance, numberStop
         if (placeInSection) {
           if (yelpResults[i].businesses[0].rating > evenSpreadResults[evenSpreadResults.length - 1].rating) {
             evenSpreadResults[evenSpreadResults.length - 1] = yelpResults[i].businesses[0];
-          } else if (yelpResults[i].businesses[0].rating === evenSpreadResults[evenSpreadResults.length - 1].rating && 
+          } else if (yelpResults[i].businesses[0].rating === evenSpreadResults[evenSpreadResults.length - 1].rating &&
                    yelpResults[i].businesses[0].review_count > evenSpreadResults[evenSpreadResults.length - 1].review_count) {
             evenSpreadResults[evenSpreadResults.length - 1] = yelpResults[i].businesses[0];
           }

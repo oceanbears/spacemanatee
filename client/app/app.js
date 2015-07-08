@@ -16,7 +16,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
   $scope.optionFilter = $scope.optionSelections[1].value;
   //initialize the geoCodeNotSuccessful to be used for determining valid continental destination or not
   $scope.geoCodeNotSuccessful = false;
-  
+
   //put police car on current location
   $scope.copLocation = function() {
     //current position
@@ -51,7 +51,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
           lng: position.coords.longitude
         }
         sendData();
-      }, 
+      },
       function(error) {
         console.log('Geo error: ', error)
       });
@@ -115,7 +115,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
       //set current latitude and longitude
       lat = position.coords.latitude;
       lng = position.coords.longitude;
-      //if lng and lat is defined then get address 
+      //if lng and lat is defined then get address
       if (lng && lat) {
         function getAddress(position) {
           var latlng = makeGooglePos(position);
@@ -196,7 +196,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
     }
 
     $scope.geoCodeNotSuccessful = false;  // every time when submit button is pressed, reset the geoCodeNotSuccessful to false
-   
+
     console.log("SCOPE ENTIRE: ", $scope.location);
     //clears any markers the user has entered by clicking
     if (clickMarkerArray[0] && clickMarkerArray[1]) {
@@ -228,11 +228,11 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
 
         // successfully get the direction based on locations
         if (status === google.maps.DirectionsStatus.OK) {
-           
+
           //enable direction button if address is valid
           $("#getDir").attr("disabled",false);
 
-          $scope.geoCodeNotSuccessful=false;  
+          $scope.geoCodeNotSuccessful=false;
           //Update the map on index.html
           directionsDisplay.setDirections(response);
 
@@ -251,13 +251,14 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
           //gather all points along route returned by Google in overview_path property
           //and insert them into waypoints object to send to server
           for (var j = 0; j < response.routes[0].overview_path.length; j++) {
-            sendData.waypoints[j] = response.routes[0].overview_path[j].k + "," + response.routes[0].overview_path[j].D;
+            sendData.waypoints[j] = response.routes[0].overview_path[j].A + "," + response.routes[0].overview_path[j].F;
           }
 
           console.log("sendData: ", sendData);
           $scope.appendWarningMsg($scope.geoCodeNotSuccessful); // append the blank (no warning) message to main.html
 
-          // Send all waypoints along route to server
+          //Make the request to the server containing the waypoints for the route to
+          //get the Yelp results.
           Maps.sendPost(sendData)
           .then(function(res) {
             console.log("PROMISE OBJ: ", res.data.results);
@@ -267,7 +268,7 @@ angular.module('app', ['autofill-directive', 'ngRoute', 'app.service'])
             setTimeout(function() {
               submitReady = true;
             }, delay);
-            $scope.distance = "You have  " + res.data.results.length + " spots to pick from in " + 
+            $scope.distance = "You have  " + res.data.results.length + " spots to pick from in " +
             sendData.distance + ".";
             $scope.topTen = res.data.topTen;
             console.log(res.data.results);
