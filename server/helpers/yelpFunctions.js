@@ -56,7 +56,7 @@ module.exports.searchYelp = function (req, res, coords, distance, callback) {
   yelpProperty.term = req.body.optionFilter;           // Type of business (food, restaurants, bars, hotels, etc.)
 
   //Set the distance of the yelp search
-  yelpProperty.radius_filter = yelpProperty.radius_filter * Math.min(Math.ceil(distance/20), 5);
+  var radius = yelpProperty.radius_filter * Math.min(Math.ceil(distance/20), 5);
 
   //Request yelp for each point along route that is returned by filterGoogle.js
   for(var i = 0; i < coords.length; i++){
@@ -71,6 +71,8 @@ module.exports.searchYelp = function (req, res, coords, distance, callback) {
       }, function(error, data) {
         if (error) {
           console.log('Error with yelp request:', error);
+          res.status(500).send('Error with request');
+          return;
         }
         //Push the data returned from Yelp into yelpResults array
         yelpResults[i] = data;
